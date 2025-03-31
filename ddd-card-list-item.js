@@ -3,7 +3,8 @@
  * @license Apache-2.0, see LICENSE for full text.
  */
 import { LitElement, html, css } from "lit";
-import { DDD } from "@haxtheweb/d-d-d/d-d-d.js";
+import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
+import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 
 /**
  * `ddd-card-list`
@@ -11,14 +12,24 @@ import { DDD } from "@haxtheweb/d-d-d/d-d-d.js";
  * @demo index.html
  * @element ddd-card-list
  */
-export class DddCardList extends DDD {
+export class DddCardListItem extends DDDSuper(I18NMixin(LitElement)) {
   static get tag() {
-    return "ddd-card-list";
+    return "ddd-card-list-item";
   }
 
   constructor() {
     super();
     this.title = "Card List";
+    this.i18n = {
+      en: {
+        title: "Card List",
+        description: "A list of cards",
+      },
+      es: {
+        title: "Lista de Tarjetas",
+        description: "Una lista de tarjetas",
+      },
+    };
   }
 
   // Lit reactive properties
@@ -64,7 +75,7 @@ export class DddCardList extends DDD {
           box-shadow: var(--ddd-card-box-shadow);
           padding: var(--ddd-spacing-4);
           border: var(--ddd-card-border);
-          //width: calc(33.33% - 16px);
+          width: calc(33.33% - 16px);
         }
         .ddd-card:hover {
           box-shadow: var(--ddd-card-box-shadow-hover);
@@ -73,35 +84,16 @@ export class DddCardList extends DDD {
           margin: 0;
           font-size: var(--ddd-card-title-font-size, var(--ddd-font-size-m));
         }
-        .button {
-          // edit
-          background-color: var(--ddd-button-background-color, #007bff);
-          color: var(--ddd-button-color, #fff);
-          border: none;
-          padding: var(--ddd-spacing-2);
-          border-radius: var(--ddd-border-radius);
-          width: 100%;
-          font-size: var(--ddd-button-font-size, var(--ddd-font-size-m));
-          cursor: pointer;
-        }
-        .img {
-          width: 16%;
-          height: 16%;
-          border-radius: var(--ddd-radius-sm);
-          margin-bottom: var(--ddd-spacing-2);
-        }
       `,
     ];
-  } // Hi chris. you left of tryign to create the card. One of you main issues was that you could not figure out how to chnage the sizing
+  }
 
   // Lit render the HTML
   render() {
     return html` <div class="wrapper">
-      <ddd-card-list-item> 
+      <ddd-card-list-item>/* this is the card list */
         <ddd-card class="ddd-card">
-          <img src="https://www.worldcampus.psu.edu/sites/default/files/2018-12/1920x840_about-us_L1_1.jpg" alt="Card image" />
           <h3>This is the outline for the card</h3>
-          <button>Click me</button>
           <p>This is the test for the card</p>
         </div>
       </div>
@@ -117,4 +109,4 @@ export class DddCardList extends DDD {
   }
 }
 
-globalThis.customElements.define(DddCardList.tag, DddCardList);
+globalThis.customElements.define(DddCardListItem.tag, DddCardListItem);
