@@ -4,6 +4,7 @@
  */
 import { LitElement, html, css } from "lit";
 import { DDD } from "@haxtheweb/d-d-d/d-d-d.js";
+import "./ddd-card-list-item.js";
 
 /**
  * `ddd-card-list`
@@ -27,6 +28,8 @@ export class DddCardList extends DDD {
       ...super.properties,
       title: { type: String },
       description: { type: String },
+      items: { type: Array },
+      card: { type: Object },
     };
   }
 
@@ -73,38 +76,15 @@ export class DddCardList extends DDD {
           margin: 0;
           font-size: var(--ddd-card-title-font-size, var(--ddd-font-size-m));
         }
-        .button {
-          // edit
-          background-color: var(--ddd-button-background-color, #007bff);
-          color: var(--ddd-button-color, #fff);
-          border: none;
-          padding: var(--ddd-spacing-2);
-          border-radius: var(--ddd-border-radius);
-          width: 100%;
-          font-size: var(--ddd-button-font-size, var(--ddd-font-size-m));
-          cursor: pointer;
-        }
-        .img {
-          width: 16%;
-          height: 16%;
-          border-radius: var(--ddd-radius-sm);
-          margin-bottom: var(--ddd-spacing-2);
-        }
       `,
     ];
-  } // Hi chris. you left of tryign to create the card. One of you main issues was that you could not figure out how to chnage the sizing
+  }
 
   // Lit render the HTML
+  // List of items ie cards
   render() {
     return html` <div class="wrapper">
-      <ddd-card-list-item> 
-        <ddd-card class="ddd-card">
-          <img src="https://www.worldcampus.psu.edu/sites/default/files/2018-12/1920x840_about-us_L1_1.jpg" alt="Card image" />
-          <h3>This is the outline for the card</h3>
-          <button>Click me</button>
-          <p>This is the test for the card</p>
-        </div>
-      </div>
+      <slot></slot>
     </div>`;
   }
 

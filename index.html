@@ -33,16 +33,21 @@
         color: var(--ddd-primary-17);
       }
     </style>
-    <title>ddd-card-list</title>
+    <title>ddd-test-card</title>
   </head>
 
   <body>
     <div id="demo">
       <h1>ddd-card-list</h1>
-      <!-- this is going to do whatever the tag's defaults are -->
+      <!-- this is going to do whatever the tag's defaults are
+       List Item is card -->
       <h2>Default</h2>
-      <ddd-card-list></ddd-card-list>
-      <h2>Slot usage</h2>
+
+      <ddd-card-list>
+        <!-- Should be able to place card with ids/ttitles here -->
+        <ddd-card-list-item></ddd-card-list-item>
+      </ddd-card-list>
+
       <ddd-card-list data-accent="2" data-primary="17"
         ><div>Sample slot content</div></ddd-card-list
       >
@@ -52,7 +57,7 @@
     <script type="module" src="./ddd-card-list.js"></script>
     <script type="module" src="./ddd-card-list-item.js"></script>
 
-    <!-- Take HAX, the Web and you further down the rabbit hole -->
+    <!-- Take HAX, the Web and you further down the rabbit hole 
     <style>
       #follow-the-white-rabbit {
         margin: var(--ddd-spacing-4) auto 64px 16px;
@@ -217,5 +222,7 @@
         </ul>
       </div>
     </details>
+  </body>
+</html> -->
   </body>
 </html>
