@@ -3,7 +3,9 @@
  * @license Apache-2.0, see LICENSE for full text.
  */
 import { LitElement, html, css } from "lit";
-import { DDD } from "@haxtheweb/d-d-d/d-d-d.js";
+import { DDD, DDDPulseEffectSuper } from "@haxtheweb/d-d-d/d-d-d.js";
+import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
+import { DDDDataAttributes } from "@haxtheweb/d-d-d/lib/DDDStyles";
 import "./ddd-card-list-item.js";
 
 /**
@@ -12,7 +14,7 @@ import "./ddd-card-list-item.js";
  * @demo index.html
  * @element ddd-card-list
  */
-export class DddCardList extends DDD {
+export class DddCardList extends DDDPulseEffectSuper(I18NMixin(DDD)) {
   static get tag() {
     return "ddd-card-list";
   }
@@ -20,6 +22,11 @@ export class DddCardList extends DDD {
   constructor() {
     super();
     this.title = "Card List";
+    this.image = "";
+    this.description = "";
+    this.primary = "";
+    this.accent = "";
+    this.items = [];
   }
 
   // Lit reactive properties
@@ -27,7 +34,14 @@ export class DddCardList extends DDD {
     return {
       ...super.properties,
       title: { type: String },
+      image: { type: String },
       description: { type: String },
+      primary: {
+        type: String,
+        reflect: true,
+        attribute: "ddd-primary",
+      },
+      accent: { type: String },
       items: { type: Array },
       card: { type: Object },
     };
@@ -40,6 +54,10 @@ export class DddCardList extends DDD {
       css`
         :host {
           display: block;
+          border: 1px solid var(--ddd-border-color, #ccc);
+          border-radius: var(--ddd-border-radius, 8px);
+          padding: var(--ddd-spacing-3);
+          text-align: center;
           color: var(--ddd-theme-primary);
           background-color: var(--ddd-theme-accent);
           font-family: var(--ddd-font-navigation);
@@ -48,11 +66,29 @@ export class DddCardList extends DDD {
           margin: var(--ddd-spacing-2);
           padding: var(--ddd-spacing-4);
         }
+        .title-bar {
+          padding: var(--ddd-spacing-2);
+          font-weight: bold;
+        }
+        div ::slotted(*) {
+          display: inline-block;
+        }
         h3 span {
           font-size: var(
             --ddd-card-list-label-font-size,
             var(--ddd-font-size-s)
           );
+          border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary);
+        }
+        .ddd-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 5px;
+          border: 1px solid var(--ddd-theme-primary);
+          border-radius: 10px;
+          background-color: var(--ddd-theme-accent);
         }
         .card-list {
           // this is the list that holds the card
@@ -60,40 +96,24 @@ export class DddCardList extends DDD {
           flex-wrap: wrap;
           gap: var(--ddd-spacing-2);
         }
-        .ddd-card {
-          // design of the first card
-          background-color: var(--ddd-card-background-color, #fff);
-          border-radius: var(--ddd-border-radius);
-          box-shadow: var(--ddd-card-box-shadow);
-          padding: var(--ddd-spacing-4);
-          border: var(--ddd-card-border);
-          //width: calc(33.33% - 16px);
-        }
-        .ddd-card:hover {
-          box-shadow: var(--ddd-card-box-shadow-hover);
-        }
-        .ddd-card h3 {
-          margin: 0;
-          font-size: var(--ddd-card-title-font-size, var(--ddd-font-size-m));
-        }
       `,
     ];
   }
 
   // Lit render the HTML
-  // List of items ie cards
   render() {
-    return html` <div class="wrapper">
-      <slot></slot>
-    </div>`;
-  }
-
-  /**
-   * haxProperties integration via file reference
-   */
-  static get haxProperties() {
-    return new URL(`./lib/${this.tag}.haxProperties.json`, import.meta.url)
-      .href;
+    return html`
+      <div class="wrapper">
+        <h3><span>${this.t.title}</span> ${this.title}</h3>
+        <div class="card-list">
+          ${this.items.map(
+            (item) =>
+              html`<ddd-card-list-item .card="${item}"></ddd-card-list-item>`
+          )}
+        </div>
+        <slot></slot>
+      </div>
+    `;
   }
 }
 

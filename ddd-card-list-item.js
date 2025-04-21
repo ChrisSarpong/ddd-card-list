@@ -3,8 +3,6 @@
  * @license Apache-2.0, see LICENSE for full text.
  */
 import { LitElement, html, css } from "lit";
-import { DDD } from "@haxtheweb/d-d-d/d-d-d.js";
-import "./ddd-card-list-item.js";
 
 /**
  * `ddd-card-list`
@@ -12,7 +10,7 @@ import "./ddd-card-list-item.js";
  * @demo index.html
  * @element ddd-card-list
  */
-export class DddCardListItem extends DDD {
+export class DddCardListItem extends LitElement {
   static get tag() {
     return "ddd-card-list-item";
   }
@@ -20,140 +18,107 @@ export class DddCardListItem extends DDD {
   constructor() {
     super();
     this.title = "Card List";
-    this.i18n = {
-      en: {
-        title: "Card List",
-        description: "A list of cards",
-      },
-      es: {
-        title: "Lista de Tarjetas",
-        description: "Una lista de tarjetas",
-      },
-    };
+    this.description = "";
+    this.image = "";
+    this.link = "";
+    this.item = {};
   }
 
   // Lit reactive properties
   static get properties() {
     return {
-      ...super.properties,
       title: { type: String },
       description: { type: String },
-      items: { type: Array },
+      link: { type: String },
+      image: { type: String },
       card: { type: Object },
     };
   }
 
-  // Lit scoped styles
-  static get styles() {
-    return [
-      super.styles,
-      css`
-        :host {
-          display: block;
-          color: var(--ddd-theme-primary);
-          background-color: var(
-            --ddd-theme-accent
-          ); // this chnages the background color of the cards
-          font-family: var(--ddd-font-navigation);
-        }
-        .wrapper {
-          margin: var(--ddd-spacing-2);
-          padding: var(--ddd-spacing-4);
-        }
-        h3 span {
-          font-size: var(
-            --ddd-card-list-label-font-size,
-            var(--ddd-font-size-s)
-          );
-        }
-        .card-list {
-          // this is the list that holds the card
-          display: flex;
-          flex-wrap: wrap;
-          gap: var(--ddd-spacing-2);
-        }
-        .ddd-card {
-          // design of the first card
-          background-color: var(--ddd-card-background-color, #b3d626);
-          border-radius: var(--ddd-border-radius);
-          box-shadow: var(--ddd-card-box-shadow);
-          padding: var(--ddd-spacing-4);
-          border: var(--ddd-card-border);
-          width: calc(33.33% - 16px);
-        }
-        .ddd-card:hover {
-          box-shadow: var(--ddd-card-box-shadow-hover);
-        }
-        .ddd-card h3 {
-          margin: 0;
-          font-size: var(--ddd-card-title-font-size, var(--ddd-font-size-m));
-        }
-        .button {
-          // edit
-          background-color: var(--ddd-button-background-color, #005fa9);
-          color: var(--ddd-button-color, #ffffff);
-          border: none;
-          padding: var(--ddd-spacing-2);
-          border-radius: var(--ddd-border-radius);
-          width: 100%;
-          font-size: var(--ddd-button-font-size, var(--ddd-font-size-m));
-          cursor: pointer;
-        }
-        .button:hover {
-          background-color: var(--ddd-button-background-color-hover, #001e44);
-        }
-        .img {
-          object-fit: cover;
-          border-radius: var(--ddd-radius-sm);
-          margin-bottom: var(--ddd-spacing-2);
-          width: auto;
-          height: auto;
-          max-width: 100%;
-          max-height: 100%;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        .color-line {
-          color: var(--ddd-card-color-line, #b3d626);
-          height: 4px;
-          width: 100%;
-          border-radius: var(--ddd-radius-lg);
-        }
-      `,
-    ];
-  }
-  // Hi chris. you left of tryign to create the card. One of you main issues was that you could not figure out how to chnage the sizing
-  // Thaniks chris, current issues is nothing is showing up ! :(
-  // Lit render the HTML
+  // Scoped styles
+  static styles = css`
+    :host {
+      /* standard SYTLING  */
+      display: block;
+      font-family: var(--ddd-font-navigation, Arial, sans-serif);
+      color: var(--ddd-theme-primary, #000);
+      background-color: var(--ddd-theme-accent, #f9f9f9);
+    }
+    .wrapper {
+      /* Wrapper stlying  */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid var(--ddd-border-color, #ccc);
+      border-radius: var(--ddd-border-radius, 8px);
+      box-shadow: var(--ddd-card-box-shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+    .img {
+      /* Image styling  */
+      width: 100%;
+      height: auto;
+      border-radius: var(--ddd-radius-lg, 8px);
+      object-fit: cover;
+      margin-bottom: 16px;
+    }
+    .title {
+      /* Title styling, to change the font style this is where  */
+      font-size: var(--ddd-card-title-font-size, 1.5rem);
+      font-weight: bold;
+      margin: 8px 0;
+      text-align: center;
+    }
+    .description {
+      font-size: var(--ddd-font-size-m, 1rem);
+      color: var(--ddd-theme-default-coalyGray, #666);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .button {
+      background-color: var(--ddd-button-background-color, #005fa9);
+      color: var(--ddd-button-color, #fff);
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--ddd-border-radius, 8px);
+      font-size: var(--ddd-button-font-size, 1rem);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: var(--ddd-button-background-color-hover, #003f7f);
+    }
+  `;
+
+  // Render method
   render() {
-    return html` <!-- /* this is the card list */ -->
+    return html`
       <div class="wrapper">
         <img
-          src="https://images.ctfassets.net/ni9rh5nu0d99/1paFaX2Dc7iHh9Z6K7mIim/1427b9970ff21dd9c8a770067638efc1/abington-02.jpg?fm=webp&w=1200&q=75"
-          height="500 px"
-          width="500 px"
+          src="${this.image || ""}"
+          alt="${this.title || "Card image"}"
           class="img"
-          alt="Card image"
         />
-        <div class="Color-line"></div>
-        <h3>Abington</h3>
-        <p>
-          Close to Philadelphia, Penn State Abington’s suburban campus offers
-          bachelor's degrees, athletics, and a diverse student community.
-        </p>
-        <button class="button">Explore Button</button>
-        <slot></slot>
-      </div>`;
+        <div class="title">${this.title}</div>
+        <div class="description">
+          <slot></slot>
+        </div>
+        ${this.link
+          ? html`
+              <button
+                class="button"
+                @click="${() => this._openLink(this.link)}"
+              >
+                Explore >
+              </button>
+            `
+          : ""}
+      </div>
+    `;
   }
-
-  /**
-   * haxProperties integration via file reference
-   */
-  static get haxProperties() {
-    return new URL(`./lib/${this.tag}.haxProperties.json`, import.meta.url)
-      .href;
+  _openLink(link) {
+    window.open(link, "_blank");
   }
 }
 
-globalThis.customElements.define(DddCardListItem.tag, DddCardListItem);
+customElements.define(DddCardListItem.tag, DddCardListItem);
